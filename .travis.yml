@@ -6,6 +6,9 @@ scala:
 jdk:
   - oraclejdk8
 sudo: false
+cache:
+  directories:
+    - $HOME/.ivy2/cache
 sbt_args: -no-colors -J-Xss2m
 script:
   - sbt clean coverage test coverageReport &&

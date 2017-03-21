@@ -9,9 +9,10 @@ sudo: false
 cache:
   directories:
     - $HOME/.ivy2/cache
+before_install:
+    - export COVERALLS_REPO_TOKEN=gc6Wo2u12Q9FgSDuZK82mG8FyFJMwzNTD
 sbt_args: -no-colors -J-Xss2m
 script:
-  - sbt clean coverage test coverageReport &&
-    sbt coverageAggregate
+  - "sbt ++$TRAVIS_SCALA_VERSION coverage test coverageReport"
 after_success:
   - sbt coveralls

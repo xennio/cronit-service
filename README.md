@@ -1,1 +1,2 @@
 [![Build Status](https://travis-ci.org/212data/cronit-service.svg?branch=master)](https://travis-ci.org/212data/cronit-service)
+[![Coverage Status](https://coveralls.io/repos/github/212data/cronit-service/badge.svg?branch=master)](https://coveralls.io/github/212data/cronit-service?branch=master)

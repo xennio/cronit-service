@@ -14,7 +14,7 @@ before_install:
 sbt_args: -no-colors -J-Xss2m
 script:
     - sbt clean coverage test
-      sbt coverageReport
-      sbt coverageAggregate
+    - sbt coverageReport
+    - sbt coverageAggregate
 after_success:
-  - sbt coveralls
+    - sbt coveralls

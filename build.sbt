@@ -34,3 +34,4 @@ libraryDependencies ++= {
     "com.typesafe.akka" %% "akka-testkit" % versions.akka % "test"
   )
 }
+

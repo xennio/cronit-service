@@ -13,6 +13,8 @@ before_install:
     - export COVERALLS_REPO_TOKEN=gc6Wo2u12Q9FgSDuZK82mG8FyFJMwzNTD
 sbt_args: -no-colors -J-Xss2m
 script:
-  - "sbt ++$TRAVIS_SCALA_VERSION coverage test coverageReport"
+    - sbt clean coverage test
+      sbt coverageReport
+      sbt coverageAggregate
 after_success:
   - sbt coveralls

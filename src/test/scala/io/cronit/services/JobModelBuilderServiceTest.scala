@@ -46,6 +46,33 @@ class JobModelBuilderServiceTest extends FlatSpec with Matchers
     restJobModel.headers shouldEqual Some(Map("foo" -> "bar"))
   }
 
+
+  it should "create rest job model with CronScheduler and with empty header from given Map when job type is rest and headers are empty" in {
+
+    val jobMapRepresentation = Map("id" -> "jobId", "name" -> "jobName", "jobType" -> "Rest",
+      "group" -> "executionGroup", "schedulerInfo" -> Map("expression" -> "* * * * *", "type" -> "CronScheduler"),
+      "url" -> "http://cronscheduler.it", "method" -> "POST", "body" -> "jobBody", "expectedStatus" -> 301D)
+
+    when(jsonService.deserializeAsMap("valid job content json")).thenReturn(jobMapRepresentation)
+
+
+    val jobModel: JobModel = jobModelBuilderService.from("valid job content json")
+
+    jobModel shouldBe a[RestJobModel]
+    jobModel.id shouldEqual "jobId"
+    jobModel.name shouldEqual "jobName"
+    jobModel.group shouldEqual "executionGroup"
+    jobModel.scheduleInfo shouldBe a[CronScheduler]
+    jobModel.scheduleInfo.asInstanceOf[CronScheduler].expression shouldEqual "* * * * *"
+
+    val restJobModel = jobModel.asInstanceOf[RestJobModel]
+    restJobModel.url shouldEqual "http://cronscheduler.it"
+    restJobModel.body shouldEqual Some("jobBody")
+    restJobModel.method shouldEqual "POST"
+    restJobModel.expectedStatus shouldEqual 301
+    restJobModel.headers shouldEqual Some(Map())
+  }
+
   it should "create rest job model with ScheduleOnce with Default execution group from given Map when job type is rest and group is not defined" in {
 
     val jobMapRepresentation = Map("id" -> "jobId", "name" -> "jobName", "jobType" -> "Rest",

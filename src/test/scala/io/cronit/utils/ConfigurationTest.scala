@@ -1,6 +1,5 @@
-package io.cronit
+package io.cronit.utils
 
-import io.cronit.utils.Configuration
 import org.joda.time.DateTimeZone
 import org.scalatest.{BeforeAndAfter, FlatSpec, Matchers}
 

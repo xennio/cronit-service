@@ -13,7 +13,8 @@ lazy val versions = new {
   val mockitoCore = "1.9.5"
   val scalaTest = "2.2.3"
   val specs2 = "2.3.12"
-  val scalaMockTestSupport ="3.2.2"
+  val scalaMockTestSupport = "3.2.2"
+  val cronUtils = "5.0.5"
 }
 
 
@@ -26,6 +27,8 @@ libraryDependencies ++= {
     "ch.qos.logback" % "logback-classic" % versions.logback,
 
     "joda-time" % "joda-time" % versions.joda,
+
+    "com.cronutils" % "cron-utils" % versions.cronUtils,
 
     "org.mockito" % "mockito-core" % versions.mockitoCore % "test",
     "org.scalatest" %% "scalatest" % versions.scalaTest % "test",

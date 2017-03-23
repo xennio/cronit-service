@@ -1,7 +1,6 @@
 package io.cronit.utils
 
 import java.time.{ZoneId, ZonedDateTime}
-import java.util.Date
 
 import org.joda.time.{DateTime, DateTimeZone}
 
@@ -22,6 +21,9 @@ object Clock {
 
   var setTime: Option[DateTime] = None
 
+  def freeze(): Unit = {
+    isFrozen = true
+  }
 
   def freeze(dateTime: DateTime): Unit = {
     isFrozen = true
@@ -33,21 +35,16 @@ object Clock {
     setTime = None
   }
 
-  def now(): Date = {
+  def now(): DateTime = {
     if (isFrozen) setTime match {
-      case Some(d) => d.toDate
-      case None => DateTime.now().toLocalDateTime.toDate
-    } else DateTime.now().toLocalDateTime.toDate
-  }
-
-  def asJodaTime: DateTime = {
-    new DateTime(now)
+      case Some(d) => d
+      case None => DateTime.now()
+    } else DateTime.now()
   }
 
   def asZonedDateTime: ZonedDateTime = {
-    val nowAsJoda = asJodaTime
-    ZonedDateTime.of(nowAsJoda.getYear, nowAsJoda.getMonthOfYear, nowAsJoda.getDayOfMonth,
-      nowAsJoda.getHourOfDay, nowAsJoda.getMinuteOfDay, nowAsJoda.getSecondOfMinute,
-      nowAsJoda.getMillisOfSecond * 1000000, ZoneId.of(nowAsJoda.getZone.getID, ZoneId.SHORT_IDS))
+    ZonedDateTime.of(now.getYear, now.getMonthOfYear, now.getDayOfMonth,
+      now.getHourOfDay, now.getMinuteOfDay, now.getSecondOfMinute,
+      now.getMillisOfSecond * 1000000, ZoneId.of(now.getZone.getID, ZoneId.SHORT_IDS))
   }
 }

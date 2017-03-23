@@ -2,7 +2,7 @@ name := """cronit-service"""
 version := "1.0"
 scalaVersion := "2.11.8"
 sbtPlugin := true
-
+parallelExecution in Test := false
 
 lazy val versions = new {
   val akka = "2.4.11"

@@ -13,7 +13,7 @@ class CronExpressionServiceTest extends FlatSpec with Matchers {
     Clock.freeze(DateUtils.localDate("10021981"))
 
     val nextRunningDate = cronExpressionComponent.cronExpressionService.getNextExecutionDate("* 1 * * *")
-    nextRunningDate shouldBe Clock.asJodaTime.plusHours(1)
+    nextRunningDate shouldBe Clock.now.plusHours(1)
 
     Clock.unfreeze()
   }

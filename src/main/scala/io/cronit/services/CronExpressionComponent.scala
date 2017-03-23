@@ -11,10 +11,10 @@ trait CronExpressionComponent {
 
   val cronExpressionService: CronExpressionService
   val cronDefinition = CronDefinitionBuilder.instanceDefinitionFor(CronType.UNIX)
+  val cronParser = new CronParser(cronDefinition)
 
   class CronExpressionService {
     def getNextExecutionDate(expression: String) = {
-      val cronParser = new CronParser(cronDefinition)
       val cron = cronParser.parse(expression)
       ExecutionTime.forCron(cron).nextExecution(Clock.asZonedDateTime).toJoda
     }

@@ -1,5 +1,5 @@
 package io.cronit.models
 
-import java.util.Date
+import org.joda.time.DateTime
 
-case class ScheduleOnce(runAt: Date) extends ScheduleInfo
+case class ScheduleOnce(runAt: DateTime) extends ScheduleInfo

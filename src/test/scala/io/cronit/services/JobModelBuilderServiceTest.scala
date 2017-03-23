@@ -91,7 +91,7 @@ class JobModelBuilderServiceTest extends FlatSpec with Matchers
     jobModel.name shouldEqual "jobName"
     jobModel.group shouldEqual "Default"
     jobModel.scheduleInfo shouldBe a[ScheduleOnce]
-    jobModel.scheduleInfo.asInstanceOf[ScheduleOnce].runAt shouldEqual DateTime.parse("2016-10-30T00:00:00.000Z").toDate
+    jobModel.scheduleInfo.asInstanceOf[ScheduleOnce].runAt shouldEqual DateTime.parse("2016-10-30T00:00:00.000Z")
 
     val restJobModel = jobModel.asInstanceOf[RestJobModel]
     restJobModel.url shouldEqual "http://cronscheduler.it"

@@ -18,7 +18,7 @@ trait JobModelBuilderComponent {
 
       val schedulerInfo = schedulerInfoMap("type") match {
         case "CronScheduler" => CronScheduler(schedulerInfoMap("expression"))
-        case "ScheduleOnce" => ScheduleOnce(DateTime.parse(schedulerInfoMap("runAt")).toDate)
+        case "ScheduleOnce" => ScheduleOnce(DateTime.parse(schedulerInfoMap("runAt")))
       }
 
       val jobType = from("jobType")

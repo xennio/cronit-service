@@ -37,7 +37,7 @@ class CronExpressionServiceTest extends FlatSpec with Matchers {
 
     Clock.freeze(DateUtils.localDate("22032017"))
 
-    val finiteDuration = cronExpressionComponent.cronExpressionService.getFiniteDurationFromNow(DateTime.parse("2017-03-23T08:31:22+00:00"))
+    val finiteDuration = cronExpressionComponent.cronExpressionService.getFiniteDurationFromNow(DateTime.parse("2017-03-23T08:31:22.000+00:00"))
     finiteDuration shouldBe Duration(124282000, MILLISECONDS)
 
     Clock.unfreeze()

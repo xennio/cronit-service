@@ -3,6 +3,8 @@ package io.cronit.builder
 import io.cronit.models.{CronScheduler, RestJobModel, ScheduleInfo, ScheduleOnce}
 import io.cronit.utils.Clock
 
+import scala.collection.mutable.Map
+
 class RestJobModelBuilder {
 
   var method: String = ""
@@ -15,7 +17,7 @@ class RestJobModelBuilder {
   var scheduleInfo: ScheduleInfo = new ScheduleInfo {}
 
   def addHeader(key: String, value: String): RestJobModelBuilder = {
-    headers + (key -> value)
+    headers += (key -> value)
     this
   }
 

@@ -64,11 +64,17 @@ class RestJobModelBuilder {
 
       override def method = builder.method
 
-      override def body = Some(builder.body)
+      override def body = builder.body.length match {
+        case 0 => None
+        case _ => Some(builder.body)
+      }
 
       override def expectedStatus = builder.expectedStatus
 
-      override def headers = Some(builder.headers)
+      override def headers = builder.headers.size match {
+        case 0 => None
+        case _ => Some(builder.headers)
+      }
 
       override def scheduleInfo = builder.scheduleInfo
 

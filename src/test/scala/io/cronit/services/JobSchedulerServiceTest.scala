@@ -1,28 +1,34 @@
 package io.cronit.services
 
-import akka.actor.{ActorRef, Scheduler}
-import akka.testkit.TestProbe
+import akka.actor.{ActorRef, ActorSystem, Scheduler}
+import akka.testkit.{TestKit, TestProbe}
 import io.cronit.builder.RestJobModelBuilder
 import io.cronit.utils.{Clock, DateUtils}
 import org.mockito.Mockito._
-import org.scalatest.{FlatSpecLike, Matchers}
+import org.scalatest.{BeforeAndAfterAll, FlatSpecLike, Matchers}
 import org.specs2.mock.Mockito
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
-class JobSchedulerServiceTest extends ActorSystemComponent with FlatSpecLike
+class JobSchedulerServiceTest extends TestKit(ActorSystem("CronitTestActorSystem")) with ActorSystemComponent with FlatSpecLike
   with Matchers
   with Mockito
   with JobSchedulerComponent
-  with CronExpressionComponent {
+  with CronExpressionComponent
+  with BeforeAndAfterAll {
 
-  override val jobSchedulerService: JobSchedulerService = new JobSchedulerService
-  override val cronExpressionService: CronExpressionService = mock[CronExpressionService]
+  override def afterAll {
+    TestKit.shutdownActorSystem(system)
+  }
+
   override val actorSystemService: ActorSystemService = new ActorSystemService {
     override val scheduler: Scheduler = mock[Scheduler]
+  }
+  override val jobSchedulerService: JobSchedulerService = new JobSchedulerService {
     override val restTaskActor: ActorRef = TestProbe().ref
   }
+  override val cronExpressionService: CronExpressionService = mock[CronExpressionService]
 
   it should "calculate next execution delay when scheduling a task" in {
     Clock.freeze(DateUtils.toDate("20180202"))
@@ -33,7 +39,7 @@ class JobSchedulerServiceTest extends ActorSystemComponent with FlatSpecLike
 
     jobSchedulerService.scheduleTask(restJob)
 
-    verify(actorSystemService.scheduler).scheduleOnce(5 minutes, actorSystemService.restTaskActor, restJob)
+    verify(actorSystemService.scheduler).scheduleOnce(5 minutes, jobSchedulerService.restTaskActor, restJob)
     Clock.unfreeze()
   }
 
@@ -45,7 +51,7 @@ class JobSchedulerServiceTest extends ActorSystemComponent with FlatSpecLike
 
     jobSchedulerService.scheduleTask(restJob)
 
-    verify(actorSystemService.scheduler).scheduleOnce(15 minutes, actorSystemService.restTaskActor, restJob)
+    verify(actorSystemService.scheduler).scheduleOnce(15 minutes, jobSchedulerService.restTaskActor, restJob)
     Clock.unfreeze()
   }
 }

@@ -1,5 +1,7 @@
 package io.cronit.services
 
+import akka.actor.Props
+import io.cronit.actors.RestTaskActor
 import io.cronit.models.{CronScheduler, JobModel, ScheduleOnce}
 import io.cronit.utils.Clock
 import org.joda.time.DateTime
@@ -11,6 +13,8 @@ trait JobSchedulerComponent {
   val jobSchedulerService: JobSchedulerService
 
   class JobSchedulerService {
+    val restTaskActor = actorSystemService.actorSystem.actorOf(Props[RestTaskActor])
+
     def scheduleTask(jobModel: JobModel): Unit = {
       var executionDate: DateTime = Clock.now()
       jobModel.scheduleInfo match {
@@ -22,7 +26,7 @@ trait JobSchedulerComponent {
         }
       }
       val delay = cronExpressionService.getFiniteDurationFromNow(executionDate)
-      actorSystemService.scheduler.scheduleOnce(delay, actorSystemService.restTaskActor, jobModel)
+      actorSystemService.scheduler.scheduleOnce(delay, restTaskActor, jobModel)
     }
   }
 
